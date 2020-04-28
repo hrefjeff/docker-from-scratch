@@ -116,7 +116,7 @@ expose is just an indicator that the container will be listening on 3000. it doe
 
 ## Step 8 - docker-compose
 
-Defined with YAML files
+To build more complex environments (multiple containers). Defined with YAML files. (bundled in windows and mac, gotta get it separate for linux.)
 
 ```YAML
 version: "2.4"
@@ -135,4 +135,13 @@ services:
         platform: linux
 networks:
     webnet:
+```
+
+services = things we want to run (equivalent of docker run executed earlier)
+
+```Bash
+
+docker-compose -f ./docker-compose.yml up node
+
+docker-compose -f
 ```
