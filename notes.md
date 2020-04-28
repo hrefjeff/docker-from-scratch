@@ -275,3 +275,15 @@ docker stop sql
 docker rm sql
 docker network rm step11
 ```
+
+```Dockerfile
+FROM microsoft/aspnetcore:1.1
+ARG source
+WORKDIR /app
+EXPOSE 80
+COPY ${source:-obj/Docker/publish} .
+ENTRYPOINT ["dotnet", "DemoApp.dll"]
+```
+
+ the Dockerfile being used has an ARG named source. At runtime you'll need to provide this information.
+ 
