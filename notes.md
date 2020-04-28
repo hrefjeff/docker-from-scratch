@@ -114,4 +114,25 @@ expose is just an indicator that the container will be listening on 3000. it doe
 
 `docker rmi nodejs-app` to get rid of the image that was built
 
-## Step 8 - 
+## Step 8 - docker-compose
+
+Defined with YAML files
+
+```YAML
+version: "2.4"
+
+services:
+    node:
+        image: node:7.7.4-alpine
+        ports:
+            - "8080:3000"
+        volumes:
+            - .:/src
+        working_dir: /src
+        command: node app.js
+        networks:
+            - webnet
+        platform: linux
+networks:
+    webnet:
+```
