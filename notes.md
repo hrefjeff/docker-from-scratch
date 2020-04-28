@@ -1,5 +1,7 @@
 # Virtual Workshop: Docker from Scratch
 
+Can follow this talk at github.com/arronpowell/docker-from-scratch
+
 ## Basics
 
 `docker run -it --platform=linux ubuntu /bin/bash/`
@@ -287,3 +289,101 @@ ENTRYPOINT ["dotnet", "DemoApp.dll"]
 
  the Dockerfile being used has an ARG named source. At runtime you'll need to provide this information.
  
+
+## Step 12 - Security with sql
+
+Setting up a DMZ or just not making things publicly accessible.
+The `read` commands separate steps. but it's self explanitory in the code below.
+
+```Bash
+#!/bin/sh
+
+echo building the application
+
+cd src
+
+dotnet restore ./DemoApp.sln
+dotnet publish ./DemoApp.sln -c Release -o ./DemoApp/obj/Docker/publish
+
+echo creating the image
+
+docker build -t step12 --build-arg source=obj/Docker/publish ./DemoApp
+
+echo creating network
+
+docker network create step12_web
+docker network create step12_sql
+
+echo starting containers
+
+docker run --rm -d --network step12_web -p 1337:80 --name web -e ASPNETCORE_ENVIRONMENT=Development step12
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=yourStrong(!)Password" --network step12_sql -d --name sql microsoft/mssql-server-linux
+
+read -p "Add web to sql network"
+
+docker network connect step12_sql web
+
+read
+
+echo cleanup
+
+docker stop web
+docker stop sql
+docker rm sql
+docker network rm step12_web
+docker network rm step12_sql
+```
+
+## Step 13 - Scratch
+
+```Dockerfile
+FROM scratch # ultimately is the parent of all images
+
+COPY src/app /
+CMD  ["/app"]
+```
+
+```bash
+#!/bin/bash
+
+echo Building app
+
+docker run --rm -v "$(pwd)"/src:/src -w /src golang:1.8 go build -v -o app
+
+echo Creating image
+
+docker build -t dfs-scratch -f Dockerfile.run .
+
+echo Running container
+
+docker run --rm dfs-scratch
+
+docker rmi dfs-scratch
+```
+
+## Step 14 - Multistage dockerfile
+
+Peep the multiple `FROM`s. The final `FROM` is the one that's going to create the image.
+
+```Dockerfile
+# Create a build image
+FROM golang:1.8 as build
+WORKDIR /go/src
+COPY src/app.go .
+RUN go build -v -o app
+
+# Create a run image
+FROM scratch
+WORKDIR /root/
+# Copy the file from the build image
+# Great for tests. If the build image isn't present, the following command won't run.
+COPY --from=build /go/src/app .
+CMD ["./app"]
+```
+
+## Closing words
+
+1. images are great for experimenting.
+1. Compose represents environments, but isn't really needed.
+1. Networks can represent a DMZ
+1. Scratch is not particularly useful
