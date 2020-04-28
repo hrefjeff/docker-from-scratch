@@ -140,8 +140,102 @@ networks:
 services = things we want to run (equivalent of docker run executed earlier)
 
 ```Bash
-
 docker-compose -f ./docker-compose.yml up node
 
 docker-compose -f
+```
+
+`docker ps` to show container running defined in the docker-compose above.
+
+hit `CTRL-C` to gracefully stop.
+
+## Step 9 - Docker compose orchestrate Dockerfile
+
+Similar to step 7. 
+
+```YAML
+version: "2.4"
+
+services:
+    node:
+        ports:
+            - "8080:3000"
+        networks:
+            - webnet
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        platform: linux
+networks:
+    webnet:
+```
+
+Building an image from a Dockerfile.
+
+## Step 10 - Docker compose with passing in environment variables
+
+```YAML
+version: "3"
+
+services:
+    sql:
+        ports:
+            - "1433:1433"
+        networks:
+            - sqlnet
+        image: microsoft/mssql-server-linux
+        environment:
+            - ACCEPT_EULA=Y
+            - SA_PASSWORD=yourStrong(!)Password
+networks:
+    sqlnet:
+```
+
+Peep the environment stuff
+
+run the sql server.
+
+```Bash
+docker-compose -f ./docker-compose.yml up sql
+
+docker-compose rm -f
+```
+
+if you're using database, make sure you're using volumes to mount and persist data.
+
+Can use sql workbench and open up connection to container.
+
+Run the following sql commands:
+
+```linq
+CREATE DATABASE [docker_stuff]
+
+CREATE TABLE [dbo].[Person] (
+        Id INT NOT NULL IDENTITY(1,1) primary key,
+        FirstName VARCHAR(50) NOT NULL,
+        LastName VARCHAR(50) NOT NULL
+)
+
+Persons.InsertAllOnSubmit(new[] {
+        new Person
+        {
+                FirstName = "Aaron",
+                LastName = "Powell"
+        },
+        new Person
+        {
+                FirstName = "Lars",
+                LastName = "Klint"
+        },
+        new Person
+        {
+                FirstName = "Jenny",
+                LastName = "Anderson"
+        }
+});
+
+SubmitChanges();
+
+Persons.Dump();
+
 ```
