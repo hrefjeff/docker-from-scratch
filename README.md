@@ -1,12 +1,14 @@
 # Virtual Workshop: Docker from Scratch
 
-Can follow this talk at github.com/arronpowell/docker-from-scratch
+Aaron powell's (the creator of this demo) has a presentation that can be found (here)[github.com/arronpowell/docker-from-scratch]. This code is 3 years old, however the concepts behind containers still apply today.
 
 ## Basics
 
 `docker run -it --platform=linux ubuntu /bin/bash/`
 
-in the container: ls -la, exit
+Now we're inside the container because of `-it`.
+
+Run `ls -la` and take a peek at what's created. When finished, type `exit`.
 
 `docker ps` shows all running containers on the machine. Nothing shows because we exited the container and it stopped.
 
