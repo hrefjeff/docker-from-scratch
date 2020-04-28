@@ -43,4 +43,75 @@ docker attach ubuntu3
 
 `docker rm {all images}`
 
-## 
+## Step 3 - Volumes
+
+To make files available in the container that is on the host, use a volume.
+
+`docker run --platform=linux --rm -v "$(pwd):/files" maxcnunes/unrar unrar x -r Trunk.rar`
+
+before the colon, it is our path, then after it's the location in the container
+
+## Step 4 - Some images
+
+`docker run --platform=linux -it --rm --name node node:7.7.4-alpine`
+
+Can write javascript on the node server now
+
+`console.log('hello')`
+
+`var fs = require('fs')`
+
+`fs.readdirSync('/', function(err, files){ console.log(files); })`
+
+## Step 5 - Node app
+
+`docker run --platform=linux -it --rm --name node -d -v "$(pwd):/src" -w /src node:7.7.4-alpine node app.js`
+
+-w = working directory 
+-d = remember this is interactive, but we don't attach to the process
+
+`docker ps` to see if it's up
+
+`curl http://localhost:3000` will be from the host machine
+
+Uh uh! Can't connect!
+
+`docker logs -f node`
+
+`docker inspect node` shows details of container. notice ports is empty
+
+`docker kill node`
+
+## Step 6 - Port access
+
+`docker run --platform=linux -it --rm --name node -d -v "$(pwd):/src" -w /src -p 8080:3000 node:7.7.4-alpine node app.js`
+
+`docker ps` will now show ports 0.0.0.0:8000 -> 30000/tcp
+
+`curl http://localhost:8080` on host machine. Yay! It works
+
+## Step 7 - Dockerfile
+
+```Dockerfile
+FROM node:7.7.4-alpine
+
+EXPOSE 3000
+RUN mkdir /src
+COPY app.js /src
+WORKDIR /src
+CMD node app.js
+```
+
+expose is just an indicator that the container will be listening on 3000. it doesn't do anything internally.
+
+`docker build --platform=linux -t nodejs-app .`
+
+`docker run --platform=linux -p 8080:3000 -d nodejs-app`
+
+`docker images` will show the image that was just created
+
+`curl http://localhost:8080` will show hello world
+
+`docker rmi nodejs-app` to get rid of the image that was built
+
+## Step 8 - 
