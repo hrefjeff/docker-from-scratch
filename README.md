@@ -1,8 +1,26 @@
 # Virtual Workshop: Docker from Scratch
 
-Aaron powell's (the creator of this demo) has a presentation that can be found (here)[github.com/arronpowell/docker-from-scratch]. This code is 3 years old, however the concepts behind containers still apply today.
+Aaron powell's (the creator of this demo) has a presentation that can be found [here](github.com/arronpowell/docker-from-scratch). This code is 3 years old, however the concepts behind containers still apply today.
 
-## Basics
+## Overview
+
+1. [Basics](#head1)
+1. [Multiple containers create from 1 image](#head2)
+1. [Volumes](#head3)
+1. [Some images](#head4)
+1. [Node application](#head5)
+1. [Port Access](#head6)
+1. [Dockerfile](#head7)
+1. [docker-compose](#head8)
+1. [docker-compose orchestrating multiple Dockerfiles](#head9)
+1. [docker-compose passing in environment variables](#head10)
+1. [.Net core application](#head11)
+1. [Security with sql](#head12)
+1. [scratch](#head13)
+1. [Multistage Dockerfile](#head14)
+1. [Closing](#closing)
+
+## Step 1 - Basics {#head1}
 
 `docker run -it --platform=linux ubuntu /bin/bash/`
 
@@ -22,7 +40,7 @@ Run `ls -la` and take a peek at what's created. When finished, type `exit`.
 
 `docker rm {container ID}` when the container is no longer needed
 
-## Running multiple containers from 1 image
+## Step 2 - Running multiple containers from 1 image {#head2}
 
 ```
 docker run -it -d --rm --platform=linux --name ubuntu1 ubuntu /bin/bash
@@ -47,7 +65,7 @@ docker attach ubuntu3
 
 `docker rm {all images}`
 
-## Step 3 - Volumes
+## Step 3 - Volumes {#head3}
 
 To make files available in the container that is on the host, use a volume.
 
@@ -55,7 +73,7 @@ To make files available in the container that is on the host, use a volume.
 
 before the colon, it is our path, then after it's the location in the container
 
-## Step 4 - Some images
+## Step 4 - Some images {#head4}
 
 `docker run --platform=linux -it --rm --name node node:7.7.4-alpine`
 
@@ -67,7 +85,7 @@ Can write javascript on the node server now
 
 `fs.readdirSync('/', function(err, files){ console.log(files); })`
 
-## Step 5 - Node app
+## Step 5 - Node app {#head5}
 
 `docker run --platform=linux -it --rm --name node -d -v "$(pwd):/src" -w /src node:7.7.4-alpine node app.js`
 
@@ -86,7 +104,7 @@ Uh uh! Can't connect!
 
 `docker kill node`
 
-## Step 6 - Port access
+## Step 6 - Port access {#head6}
 
 `docker run --platform=linux -it --rm --name node -d -v "$(pwd):/src" -w /src -p 8080:3000 node:7.7.4-alpine node app.js`
 
@@ -94,7 +112,7 @@ Uh uh! Can't connect!
 
 `curl http://localhost:8080` on host machine. Yay! It works
 
-## Step 7 - Dockerfile
+## Step 7 - Dockerfile {#head7}
 
 ```Dockerfile
 FROM node:7.7.4-alpine
@@ -118,7 +136,7 @@ expose is just an indicator that the container will be listening on 3000. it doe
 
 `docker rmi nodejs-app` to get rid of the image that was built
 
-## Step 8 - docker-compose
+## Step 8 - docker-compose {#head8}
 
 To build more complex environments (multiple containers). Defined with YAML files. (bundled in windows and mac, gotta get it separate for linux.)
 
@@ -153,7 +171,7 @@ docker-compose -f
 
 hit `CTRL-C` to gracefully stop.
 
-## Step 9 - Docker compose orchestrate Dockerfile
+## Step 9 - Docker compose orchestrating Dockerfiles {#head9}
 
 Similar to step 7. 
 
@@ -176,7 +194,7 @@ networks:
 
 Building an image from a Dockerfile.
 
-## Step 10 - Docker compose with passing in environment variables
+## Step 10 - Docker compose with passing in environment variables {#head10}
 
 ```YAML
 version: "3"
@@ -246,7 +264,7 @@ Persons.Dump();
 
 stop container will delete data in the db created (since volumes weren't used).
 
-## Step 11 - .Net core application
+## Step 11 - .Net core application {#head11}
 
 ```bash
 #!/bin/bash
@@ -292,7 +310,7 @@ ENTRYPOINT ["dotnet", "DemoApp.dll"]
  the Dockerfile being used has an ARG named source. At runtime you'll need to provide this information.
  
 
-## Step 12 - Security with sql
+## Step 12 - Security with sql {#head12}
 
 Setting up a DMZ or just not making things publicly accessible.
 The `read` commands separate steps. but it's self explanitory in the code below.
@@ -336,7 +354,7 @@ docker network rm step12_web
 docker network rm step12_sql
 ```
 
-## Step 13 - Scratch
+## Step 13 - scratch {#head13}
 
 ```Dockerfile
 FROM scratch # ultimately is the parent of all images
@@ -363,7 +381,7 @@ docker run --rm dfs-scratch
 docker rmi dfs-scratch
 ```
 
-## Step 14 - Multistage dockerfile
+## Step 14 - Multistage dockerfile {#head14}
 
 Peep the multiple `FROM`s. The final `FROM` is the one that's going to create the image.
 
@@ -383,7 +401,7 @@ COPY --from=build /go/src/app .
 CMD ["./app"]
 ```
 
-## Closing words
+## Closing words {#closing}
 
 1. images are great for experimenting.
 1. Compose represents environments, but isn't really needed.
