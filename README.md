@@ -20,7 +20,7 @@ Aaron powell's (the creator of this demo) has a presentation that can be found [
 1. [Multistage Dockerfile](#head14)
 1. [Closing](#closing)
 
-## <a name="head1"></a> Basics 
+## <a name="head1"></a> Step 1 - Basics 
 
 `docker run -it --platform=linux ubuntu /bin/bash/`
 
@@ -40,7 +40,7 @@ Run `ls -la` and take a peek at what's created. When finished, type `exit`.
 
 `docker rm {container ID}` when the container is no longer needed
 
-## Step 2 - Running multiple containers from 1 image {#head2}
+## <a name="head2"></a> Step 2 - Running multiple containers from 1 image
 
 ```
 docker run -it -d --rm --platform=linux --name ubuntu1 ubuntu /bin/bash
@@ -65,7 +65,7 @@ docker attach ubuntu3
 
 `docker rm {all images}`
 
-## Step 3 - Volumes {#head3}
+## <a name="head3"></a> Step 3 - Volumes
 
 To make files available in the container that is on the host, use a volume.
 
@@ -73,7 +73,7 @@ To make files available in the container that is on the host, use a volume.
 
 before the colon, it is our path, then after it's the location in the container
 
-## Step 4 - Some images {#head4}
+## <a name="head4"></a> Step 4 - Run image
 
 `docker run --platform=linux -it --rm --name node node:7.7.4-alpine`
 
@@ -85,7 +85,7 @@ Can write javascript on the node server now
 
 `fs.readdirSync('/', function(err, files){ console.log(files); })`
 
-## Step 5 - Node app {#head5}
+## <a name="head5"></a> Step 5 - Node app
 
 `docker run --platform=linux -it --rm --name node -d -v "$(pwd):/src" -w /src node:7.7.4-alpine node app.js`
 
@@ -104,7 +104,7 @@ Uh uh! Can't connect!
 
 `docker kill node`
 
-## Step 6 - Port access {#head6}
+## <a name="head6"></a> Step 6 - Port access
 
 `docker run --platform=linux -it --rm --name node -d -v "$(pwd):/src" -w /src -p 8080:3000 node:7.7.4-alpine node app.js`
 
@@ -112,7 +112,7 @@ Uh uh! Can't connect!
 
 `curl http://localhost:8080` on host machine. Yay! It works
 
-## Step 7 - Dockerfile {#head7}
+## <a name="head7"></a> Step 7 - Dockerfile
 
 ```Dockerfile
 FROM node:7.7.4-alpine
@@ -136,7 +136,7 @@ expose is just an indicator that the container will be listening on 3000. it doe
 
 `docker rmi nodejs-app` to get rid of the image that was built
 
-## Step 8 - docker-compose {#head8}
+## <a name="head8"></a> Step 8 - docker-compose
 
 To build more complex environments (multiple containers). Defined with YAML files. (bundled in windows and mac, gotta get it separate for linux.)
 
@@ -171,7 +171,7 @@ docker-compose -f
 
 hit `CTRL-C` to gracefully stop.
 
-## Step 9 - Docker compose orchestrating Dockerfiles {#head9}
+## <a name="head9"></a> Step 9 - docker-compose orchestrating Dockerfiles
 
 Similar to step 7. 
 
@@ -194,7 +194,7 @@ networks:
 
 Building an image from a Dockerfile.
 
-## Step 10 - Docker compose with passing in environment variables {#head10}
+## <a name="head10"></a> Step 10 - docker-compose passing in environment variables
 
 ```YAML
 version: "3"
@@ -264,7 +264,7 @@ Persons.Dump();
 
 stop container will delete data in the db created (since volumes weren't used).
 
-## Step 11 - .Net core application {#head11}
+## <a name="head11"></a> Step 11 - .Net core application
 
 ```bash
 #!/bin/bash
@@ -310,7 +310,7 @@ ENTRYPOINT ["dotnet", "DemoApp.dll"]
  the Dockerfile being used has an ARG named source. At runtime you'll need to provide this information.
  
 
-## Step 12 - Security with sql {#head12}
+## <a name="head12"></a> Step 12 - Security with sql
 
 Setting up a DMZ or just not making things publicly accessible.
 The `read` commands separate steps. but it's self explanitory in the code below.
@@ -354,7 +354,7 @@ docker network rm step12_web
 docker network rm step12_sql
 ```
 
-## Step 13 - scratch {#head13}
+## <a name="head13"></a> Step 13 - scratch
 
 ```Dockerfile
 FROM scratch # ultimately is the parent of all images
@@ -381,7 +381,7 @@ docker run --rm dfs-scratch
 docker rmi dfs-scratch
 ```
 
-## Step 14 - Multistage dockerfile {#head14}
+## <a name="head14"></a> Step 14 - Multistage dockerfile
 
 Peep the multiple `FROM`s. The final `FROM` is the one that's going to create the image.
 
@@ -401,7 +401,7 @@ COPY --from=build /go/src/app .
 CMD ["./app"]
 ```
 
-## Closing words {#closing}
+## <a name="closing"></a> Closing words
 
 1. images are great for experimenting.
 1. Compose represents environments, but isn't really needed.
