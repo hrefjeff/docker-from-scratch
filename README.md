@@ -1,6 +1,6 @@
 # Virtual Workshop: Docker from Scratch
 
-Aaron powell's (the creator of this demo) has a presentation that can be found [here](github.com/arronpowell/docker-from-scratch). This code is 3 years old, however the concepts behind containers still apply today.
+Aaron powell (the creator of this demo) has a presentation that can be found [here](github.com/arronpowell/docker-from-scratch). This code is 3 years old, however the concepts behind containers still apply today.
 
 ## Overview
 
