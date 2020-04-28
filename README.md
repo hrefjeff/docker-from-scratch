@@ -4,7 +4,7 @@ Aaron powell's (the creator of this demo) has a presentation that can be found [
 
 ## Overview
 
-1. [Basics](#basics-head1)
+1. [Basics](#head1)
 1. [Multiple containers create from 1 image](#head2)
 1. [Volumes](#head3)
 1. [Some images](#head4)
@@ -20,7 +20,7 @@ Aaron powell's (the creator of this demo) has a presentation that can be found [
 1. [Multistage Dockerfile](#head14)
 1. [Closing](#closing)
 
-## Basics {#head1}
+## <a name="head1"></a> Basics 
 
 `docker run -it --platform=linux ubuntu /bin/bash/`
 
