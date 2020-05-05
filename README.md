@@ -65,9 +65,13 @@ docker attach ubuntu3
 
 `docker rm {all images}`
 
-## <a name="head3"></a> Step 3 - Volumes
+## <a name="head3"></a> Step 3 - Volumes (use --mount instead)
 
 To make files available in the container that is on the host, use a volume.
+
+`docker run -it --rm --name ubuntu1 --mount type=bind,source="$(pwd)"/someFolder,target=/targetFolder ubuntu /bin/bash`
+
+(Use the following if your proz0rz)
 
 `docker run --platform=linux --rm -v "$(pwd):/files" maxcnunes/unrar unrar x -r Trunk.rar`
 
