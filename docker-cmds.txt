@@ -1,0 +1,29 @@
+vim Dockerfile <--- create a dockerfile
+docker build -t staticsite01 .
+docker images
+docker image rm <hash>
+docker container ls -a
+docker run -d -p 80:80 --name <nameofimage>
+docker run -p 8080:80 -it ubuntu /bin/bash
+docker ps
+docker rm <hash>
+
+docker start <hash>
+docker stop <hash>
+
+docker exec -it <hash> /bin/bash
+
+Add docker user to sudo group to avoid having to put sudo in front of every command
+sudo groupadd docker
+sudo usermod -aG docker $USER
+
+docker inspect <hash>
+
+docker create -v /data --name data_box centos
+
+docker run -it --volumes-from data_box centos /bin/bash
+
+docker run -it -v /home/ec2-user/somedir/:/data centos
+
+copy to container: docker cp foo.txt container_id:/foo.txt
+copy from container: docker cp container_id:/foo.txt foo.txt
