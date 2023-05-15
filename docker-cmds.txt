@@ -27,3 +27,6 @@ docker run -it -v /home/ec2-user/somedir/:/data centos
 
 copy to container: docker cp foo.txt container_id:/foo.txt
 copy from container: docker cp container_id:/foo.txt foo.txt
+
+docker run -d --name <CONTAINER_NAME> <IMAGE_NAME> tail -f /dev/null
+docker exec -it <CONTAINER_NAME> kubectl <YOUR_KUBECTL_COMMAND>
