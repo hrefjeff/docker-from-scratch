@@ -28,5 +28,6 @@ docker run -it -v /home/ec2-user/somedir/:/data centos
 copy to container: docker cp foo.txt container_id:/foo.txt
 copy from container: docker cp container_id:/foo.txt foo.txt
 
-docker run -d --name <CONTAINER_NAME> <IMAGE_NAME> tail -f /dev/null
-docker exec -it <CONTAINER_NAME> kubectl <YOUR_KUBECTL_COMMAND>
+image_id=$(docker images | grep "py" | awk '{print $3}')
+docker run -d --name pyutils $image_id tail -f /dev/null
+alias python='docker exec -it pyutils python'
