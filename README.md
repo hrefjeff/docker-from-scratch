@@ -2,6 +2,15 @@
 
 Aaron powell (the creator of this demo) has a presentation that can be found [here](github.com/arronpowell/docker-from-scratch). This code is 3 years old, however the concepts behind containers still apply today.
 
+## Install docker on Amazon Linux
+
+1. `sudo yum update && sudo yum upgrade -y`
+2. `sudo yum install docker`
+3. `sudo usermod -a -G docker ec2-user` run docker without sudo
+4. `newgrp docker` Reload a Linux user's group assignments to docker w/o logout
+5. `sudo systemctl enable docker.service` enable service at boot time
+6. `sudo systemctl start docker.service` start the service now
+
 ## Overview
 
 1. [Basics](#head1)
